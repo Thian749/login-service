@@ -72,5 +72,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
             return config.getAuthenticationManager();
         }
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .authorizeRequests()
+                    .antMatchers("/seccion-eliminar").hasRole("ADMIN") // Configura la URL de la sección que permite la eliminación y requiere un rol ADMIN.
+                    .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación.
+                    .and()
+                    .formLogin() // Configura el formulario de inicio de sesión.
+                    .loginPage("/login") // Página de inicio de sesión personalizada (opcional).
+                    .permitAll() // Permite a todos acceder a la página de inicio de sesión.
+                    .and()
+                    .logout() // Configura la funcionalidad de cierre de sesión.
+                    .permitAll(); // Permite a todos cerrar sesión.
+        }
+
+        // Define una fuente de autenticación personalizada (puede ser una base de datos, LDAP, etc.).
+        // @Override
+        // protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //     auth.authenticationProvider(customAuthenticationProvider);
+        // }
     }
 }
