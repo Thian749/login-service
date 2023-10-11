@@ -9,18 +9,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/control")//Ruta de peticion
+@RequestMapping("/auth")//Ruta de peticion
 @RequiredArgsConstructor // Requerimiendo de todos los argumentos del constructor
 
 public class AuthController {
 
-    @PostMapping(value = "login")
-    public String login(){
-        return "Login para el publico endpoint";
+    @PostMapping(value = "docente")
+    public String docente(){
+        return "Opciones para Docentes";
     }
 
-    @PostMapping(value = "register")
-    public String register(){
+    @PostMapping(value = "admin")
+    public String admin(){
+        return "Opciones para Admin";
+    }
+
+    @PostMapping(value = "coordinador")
+    public String coordinador(){
+        return "Opciones para coordinador";
+    }
+
+    @PostMapping(value = "addNewUser")
+    public String addNewUser(){
         return "Registro para el publico endpoint";
     }
+
+    @PostMapping(value = "welcome")
+    public String welcome(){
+        return "Inicio de pagina";
+    }
+
+    @PostMapping(value = "generateToken")
+    public String generateToken(){
+        return "Generador de tokens";
+    }
+
 }

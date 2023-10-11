@@ -1,12 +1,14 @@
 package com.team4.demoauth.config;
 import com.team4.demoauth.filter.JwtAuthFilter;
 import com.team4.demoauth.service.UserInfoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,9 +21,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-    @Configuration
+    @Configuration // Indica que esta clase de configuracion tendra metodos con Bean que son objetos que requiere la aplicacion
     @EnableWebSecurity
     @EnableMethodSecurity
+    @RequiredArgsConstructor
     public class SecurityConfig {
 
         @Autowired
@@ -36,7 +39,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // Configuring HttpSecurity to allow access to different endpoints
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            return http.csrf().disable()
+            /*return http.csrf().disable()
                     .authorizeHttpRequests()
                     .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
                     .and()
@@ -49,7 +52,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     .and()
                     .authenticationProvider(authenticationProvider())
                     .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                    .build();*/
+            return http
+                    .csrf(csrf ->
+                            csrf
+                            .disable()) //Cross-site request forgery, con esto desabilitaremos la peticion de un token que no es creado por nosotros
+                    .authorizeHttpRequests(authRequest ->
+                            authRequest
+                                    .requestMatchers("/auth/welcome","/auth/addNewUser","/auth/generateToken").permitAll() //Como es publico se da permiso total
+                                    .requestMatchers("auth/admin/**", "auth/docente/**","auth/coordinador/**").authenticated()//Esto causa que se pida para los usuarios de acceso publico que se autentifiquen
+                    )
+                    .formLogin(Customizer.withDefaults()) //Formulario de Login de Sprint Security por defecto
                     .build();
+
+
         }
 
         // Password Encoding using BCryptPasswordEncoder
@@ -73,4 +89,4 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
             return config.getAuthenticationManager();
         }
     }
-}
+
