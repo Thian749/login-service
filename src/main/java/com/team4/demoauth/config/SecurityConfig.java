@@ -73,6 +73,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
             return config.getAuthenticationManager();
         }
         protected void configure(HttpSecurity http) throws Exception {
+            //eliminacion de secciones
             http
                     .authorizeRequests()
                     .antMatchers("/seccion-eliminar").hasRole("ADMIN") // Configura la URL de la sección que permite la eliminación y requiere un rol ADMIN.
@@ -84,6 +85,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     .and()
                     .logout() // Configura la funcionalidad de cierre de sesión.
                     .permitAll(); // Permite a todos cerrar sesión.
+           //manenejo de secciones
+
+            https
+                    .authorizeRequests()
+                    .antMatchers("/seccion-privada").access("hasRole('USER') and isAccountNonExpired()")
+                    .anyRequest().authenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
         }
 
         // Define una fuente de autenticación personalizada (puede ser una base de datos, LDAP, etc.).
