@@ -86,7 +86,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     .logout() // Configura la funcionalidad de cierre de sesión.
                     .permitAll(); // Permite a todos cerrar sesión.
            //manenejo de secciones
-
+/*
             https
                     .authorizeRequests()
                     .antMatchers("/seccion-privada").access("hasRole('USER') and isAccountNonExpired()")
@@ -103,8 +103,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // Define una fuente de autenticación personalizada (puede ser una base de datos, LDAP, etc.).
         // @Override
         // protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //     auth.authenticationProvider(customAuthenticationProvider);
-        // }**TODO:
+        //     auth.authenticationProvider(customAuthenticationProvider);*/
+        // }
 
     }
 }
