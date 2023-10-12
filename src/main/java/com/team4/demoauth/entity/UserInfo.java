@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfo {
@@ -21,6 +22,6 @@ public class UserInfo {
     private String name;
     private String email;
     private String password;
-    private String roles;
+    //private String roles;
 
 }
