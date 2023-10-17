@@ -30,7 +30,7 @@ public class UserInfoDetails implements UserDetails {
     public String getPassword() {
         return password;
     }
-
+//
     @Override
     public String getUsername() {
         return name;
