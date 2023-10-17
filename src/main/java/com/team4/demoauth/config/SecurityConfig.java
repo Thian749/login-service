@@ -119,26 +119,42 @@ public class SecurityConfig {
      * @return AuthenticationProvider es el objeto que se utiliza para autenticar al usuario usando DaoAuthenticationProvider
      */
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-
-
-    // Has contratado a un administrador de seguridad que es responsable de verificar las credenciales
-    // de las personas que intentan entrar a tu casa. Este administrador sabe cómo usar las reglas de seguridad
-    // y el experto en seguridad para tomar decisiones sobre quién puede entrar y quién no.
-
-    /**
-     * Este metodo se utiliza para crear un objeto bean AuthenticationManager que se utiliza para autenticar al usuario
-     * @param config Es la configuración de autenticación que se utiliza para crear un AuthenticationManager bean
-     * @return AuthenticationManager es el objeto que se utiliza para autenticar al usuario usando la configuración de autenticación
-     * @throws Exception Excepción que se lanza si hay un error al crear el AuthenticationManager bean
-     */
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+    protected void configure(HttpSecurity http) throws Exception {
+        //eliminacion de secciones
+        http
+                .authorizeRequests()
+                .antMatchers("/seccion-eliminar").hasRole("ADMIN") // Configura la URL de la sección que permite la eliminación y requiere un rol ADMIN.
+                .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación.
+                .and()
+                .formLogin() // Configura el formulario de inicio de sesión.
+                .loginPage("/login") // Página de inicio de sesión personalizada (opcional).
+                .permitAll() // Permite a todos acceder a la página de inicio de sesión.
+                .and()
+                .logout() // Configura la funcionalidad de cierre de sesión.
+                .permitAll(); // Permite a todos cerrar sesión.
+        //manenejo de secciones
+/*
+            https
+                    .authorizeRequests()
+                    .antMatchers("/seccion-privada").access("hasRole('USER') and isAccountNonExpired()")
+                    .anyRequest().authenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
+        }
+
+        // Define una fuente de autenticación personalizada (puede ser una base de datos, LDAP, etc.).
+        // @Override
+        // protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //     auth.authenticationProvider(customAuthenticationProvider);*/
+        // }
+
     }
 }
