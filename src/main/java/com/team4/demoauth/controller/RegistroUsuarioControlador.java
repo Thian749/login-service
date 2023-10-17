@@ -1,4 +1,4 @@
-package com.team4.demoauth.controller;
+package com.team4.demoauth.Controller;
 
 import com.team4.demoauth.DTO.usuarioRegistroDTO;
 import com.team4.demoauth.service.AdminService;
@@ -30,6 +30,6 @@ public class RegistroUsuarioControlador {
     @PostMapping
     public String RegistrarCuentaDeUsuario(@ModelAttribute("usuario") usuarioRegistroDTO registroDTO){
         adminService.guardar(registroDTO);
-        return "redirect:/registro?exitoAlGuardarElUsuario"
+        return "redirect:/registro?exitoAlGuardarElUsuario";
     }
 }
