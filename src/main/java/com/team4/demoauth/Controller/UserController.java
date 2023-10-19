@@ -4,6 +4,7 @@ import com.team4.demoauth.entity.AuthRequest;
 import com.team4.demoauth.entity.UserInfo;
 import com.team4.demoauth.service.JwtService;
 import com.team4.demoauth.service.UserInfoService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Esta clase controla las acciones relacionadas con la autenticación de usuarios, la creación de perfiles y la
@@ -105,5 +107,10 @@ public class UserController {
             throw new UsernameNotFoundException("invalid user request !");
         }
     }
-
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(); // Obtiene la sesión actual del usuario a través del objeto request.
+        session.invalidate(); // Invalida la sesión para cerrar la sesión actual del usuario
+        return "redirect:/auth";// Redirige a la página de inicio de sesión o a donde desees después de cerrar la sesión.
+    }
 }
