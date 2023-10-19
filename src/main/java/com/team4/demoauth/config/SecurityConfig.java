@@ -142,7 +142,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-    protected void configure(HttpSecurity http) throws Exception {
+    /*protected void configure(HttpSecurity http) throws Exception {
         //eliminacion de secciones
         http
                 .authorizeRequests()
@@ -177,4 +177,4 @@ public class SecurityConfig {
         // }
 
     }
-}
+
