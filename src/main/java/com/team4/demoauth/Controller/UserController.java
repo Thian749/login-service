@@ -124,11 +124,13 @@ public class UserController {
 
         return "redirect:/welcome";
     }
-}
 
-/* @GetMapping("/logout")
-    public String logout(HttpServletRequest request){
-        HttpSession session = request.getSession(); // Obtiene la sesión actual del usuario a través del objeto request.
-        session.invalidate(); // Invalida la sesión para cerrar la sesión actual del usuario
-        return "redirect:/auth";// Redirige a la página de inicio de sesión o a donde desees después de cerrar la sesión.
- */
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+    HttpSession session = request.getSession(); // Obtiene la sesión actual del usuario a través del objeto request.
+    session.invalidate(); // Invalida la sesión para cerrar la sesión actual del usuario
+    return "redirect:/auth";// Redirige a la página de inicio de sesión o a donde desees después de cerrar la sesión.
+    }
+
+}
