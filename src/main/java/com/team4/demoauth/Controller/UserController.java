@@ -1,13 +1,17 @@
-package com.team4.demoauth.Controller;
+package com.team4.demoauth.controller;
 
 import com.team4.demoauth.entity.AuthRequest;
 import com.team4.demoauth.entity.UserInfo;
 import com.team4.demoauth.service.JwtService;
+import com.team4.demoauth.service.TokenBlacklistService;
+import com.team4.demoauth.service.UserInfoDetails;
 import com.team4.demoauth.service.UserInfoService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+
 
 /**
  * Esta clase controla las acciones relacionadas con la autenticación de usuarios, la creación de perfiles y la
@@ -130,7 +136,28 @@ public class UserController {
     public String logout(HttpServletRequest request) {
     HttpSession session = request.getSession(); // Obtiene la sesión actual del usuario a través del objeto request.
     session.invalidate(); // Invalida la sesión para cerrar la sesión actual del usuario
+        Cookie cookie = new Cookie("myCookie", null);
+        cookie.setMaxAge(0);  // Establece el tiempo de vida de la cookie a cero para eliminarla
+        cookie.setPath("/");  // Asegura que la cookie se elimine en toda la aplicación
     return "redirect:/auth";// Redirige a la página de inicio de sesión o a donde desees después de cerrar la sesión.
+    }
+
+    @Autowired
+    private TokenBlacklistService blacklistService;
+    @Autowired
+    private JwtService jwtTokenProvider;
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserInfoDetails loginRequest) {
+        String token = loginRequest.getToken();
+        if (blacklistService.isTokenBlacklisted(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token en lista negra");
+        }
+
+        // Autenticar al usuario y generar un nuevo token
+        // ...
+
+        return ResponseEntity.ok("Inicio de sesión exitoso");
     }
 
 }
