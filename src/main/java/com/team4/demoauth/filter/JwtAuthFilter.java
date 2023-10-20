@@ -14,10 +14,10 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtService jwtService; // este Servicio de token jwt es para validar el token y poder extraer el nombre de usuario del mismo.
+    private JwtService jwtService;
 
     @Autowired
-    private UserInfoService userInfoService;// este servicio sirve cargar los detalles del usuario.
+    private UserInfoService userInfoService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

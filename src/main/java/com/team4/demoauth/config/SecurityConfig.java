@@ -110,14 +110,17 @@ public class SecurityConfig {
     }
 
 
-    // Tienes un experto en seguridad que decide cómo comprobar si alguien debe entrar a tu casa.
-    // Este experto usa la lista de personas con llaves y la máquina mágica para verificar si
-    // las credenciales son correctas.
+    // Has contratado a un administrador de seguridad que es responsable de verificar las credenciales
+    // de las personas que intentan entrar a tu casa. Este administrador sabe cómo usar las reglas de seguridad
+    // y el experto en seguridad para tomar decisiones sobre quién puede entrar y quién no.
 
-    /**
-     * Este método se utiliza para crear un objeto AuthenticationProvider que se utiliza para autenticar al usuario
-     * @return AuthenticationProvider es el objeto que se utiliza para autenticar al usuario usando DaoAuthenticationProvider
+    /*
+     * Este metodo se utiliza para crear un objeto bean AuthenticationManager que se utiliza para autenticar al usuario
+     * @param config Es la configuración de autenticación que se utiliza para crear un AuthenticationManager bean
+     * @return AuthenticationManager es el objeto que se utiliza para autenticar al usuario usando la configuración de autenticación
+     * @throws Exception Excepción que se lanza si hay un error al crear el AuthenticationManager bean
      */
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -127,18 +130,18 @@ public class SecurityConfig {
     }
 
 
-    // Has contratado a un administrador de seguridad que es responsable de verificar las credenciales
-    // de las personas que intentan entrar a tu casa. Este administrador sabe cómo usar las reglas de seguridad
-    // y el experto en seguridad para tomar decisiones sobre quién puede entrar y quién no.
+    // Tienes un experto en seguridad que decide cómo comprobar si alguien debe entrar a tu casa.
+    // Este experto usa la lista de personas con llaves y la máquina mágica para verificar si
+    // las credenciales son correctas.
 
     /**
-     * Este metodo se utiliza para crear un objeto bean AuthenticationManager que se utiliza para autenticar al usuario
-     * @param config Es la configuración de autenticación que se utiliza para crear un AuthenticationManager bean
-     * @return AuthenticationManager es el objeto que se utiliza para autenticar al usuario usando la configuración de autenticación
-     * @throws Exception Excepción que se lanza si hay un error al crear el AuthenticationManager bean
+     * Este método se utiliza para crear un objeto AuthenticationProvider que se utiliza para autenticar al usuario
+     * @return AuthenticationProvider es el objeto que se utiliza para autenticar al usuario usando DaoAuthenticationProvider
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
 }
+
