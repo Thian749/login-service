@@ -12,18 +12,21 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserInfoService implements UserDetailsService {
+public class   UserInfoService implements UserDetailsService {
     @Autowired
-    private UserInfoRepository repository;
+    private UserInfoRepository repository; // repositorio de acceso de la base de datos
 
     @Autowired
-    private PasswordEncoder encoder;
+    private PasswordEncoder encoder;// contraseña
+
+    //este metodo se usa para cargar al usuario con su respectivo nombre
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserInfo> userDetail = repository.findByName(username);
         return userDetail.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found" + username));
     }
+    //este metodo es para adicionar un nuevo usuario
 
     public String addUser(UserInfo userInfo){
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));

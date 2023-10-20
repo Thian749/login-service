@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+/**
+ * DTO (Objeto de Transferencia de Datos) se usa para representar las solicitudes de autenticación que llegan a
+ * la aplicación
+ */
 
 @Data
 @Builder //Construccion de objetos

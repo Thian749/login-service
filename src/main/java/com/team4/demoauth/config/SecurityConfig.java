@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-// Imagina que estás construyendo una casa y estás configurando la seguridad de la casa.
+// imagina que estas construyendo una casa y dentro de ello esta confirgurando la seguridad de la misma.
 /**
  * Esta clase se utiliza para configurar la seguridad de la aplicación. Aquí es donde se establecen las reglas de seguridad para la aplicación.
  */
