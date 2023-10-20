@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class UserInfoDetails implements UserDetails {
     private String name;
     private String password;
+    private String token;
     private List<GrantedAuthority> authorities;
 
     public UserInfoDetails(UserInfo userInfo){
@@ -54,5 +55,13 @@ public class UserInfoDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
