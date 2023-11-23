@@ -64,7 +64,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)                 // (1) Deshabilitar la prevención de ataques CSRF.
                 .authorizeHttpRequests((authorized)->authorized     // (2) Establecer quién tiene permiso para entrar.
-                        .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll() // (3) Permitir a cualquiera entrar a ciertos lugares sin verificar su identidad.
+                        .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken", "/auth/login").permitAll() // (3) Permitir a cualquiera entrar a ciertos lugares sin verificar su identidad.
                         .requestMatchers("/auth/user/**").authenticated() // (4) Requerir autenticación para acceder a ciertas áreas.
                         .requestMatchers("/auth/admin/**").authenticated()); // (5) Requerir autenticación adicional para áreas muy seguras.
         http.sessionManagement((sessions)-> sessions

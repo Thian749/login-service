@@ -1,4 +1,4 @@
-package com.team4.demoauth.controller;
+package com.team4.demoauth.Controller;
 
 import com.team4.demoauth.entity.AuthRequest;
 import com.team4.demoauth.entity.UserInfo;
@@ -22,6 +22,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+
+import java.sql.*;
 
 
 /**
@@ -148,16 +150,35 @@ public class UserController {
     private JwtService jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserInfoDetails loginRequest) {
-        String token = loginRequest.getToken();
-        if (blacklistService.isTokenBlacklisted(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token en lista negra");
+    public ResponseEntity<String> login(@RequestBody AuthRequest loginRequest) {
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        // Intenta conectar con la base de datos SQLite
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite")) {
+
+            // Prepara la consulta SQL
+            String sql = "SELECT * FROM registro WHERE user = ? AND password = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+
+                // Ejecuta la consulta
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // Si se encuentra el usuario y la contraseña coinciden
+                        String token = jwtService.generateToken(username);
+                        return ResponseEntity.ok("Inicio de sesión exitoso. Token: " + token);
+                    } else {
+                        // Credenciales inválidas
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nombre de usuario o contraseña incorrectos");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en la base de datos");
         }
-
-        // Autenticar al usuario y generar un nuevo token
-        // ...
-
-        return ResponseEntity.ok("Inicio de sesión exitoso");
     }
 
 }
